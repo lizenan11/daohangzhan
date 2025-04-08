@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRE123 - 网站导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .search-box {
+            margin-left: auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box input {
+            width: 400px;
+            height: 40px;
+            border: 2px solid #4e6ef2;
+            border-radius: 20px;
+            padding: 0 15px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-box .search-icon {
+            position: absolute;
+            right: 15px;
+            color: #4e6ef2;
+            font-weight: bold;
+        }
+        
+        .category-section {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .category-tab {
+            padding: 5px 10px;
+            cursor: pointer;
+            position: relative;
+            font-size: 14px;
+        }
+        
+        .category-tab.active {
+            color: #4e6ef2;
+            font-weight: bold;
+        }
+        
+        .category-tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #4e6ef2;
+        }
+        
+        .category-more {
+            color: #ff6464;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        
+        .site-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+        
+        .site-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .site-item:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .site-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .site-info {
+            flex: 1;
+        }
+        
+        .site-name {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .site-desc {
+            font-size: 12px;
+            color: #999;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Icon colors */
+        .icon-weibo { background-color: #e6162d; }
+        .icon-toutiao { background-color: #ff4040; }
+        .icon-tiktok { background-color: #000000; }
+        .icon-tencent { background-color: #2d94ff; }
+        .icon-readhub { background-color: #4285f4; }
+        .icon-baidu { background-color: #2a56ff; }
+        .icon-sina { background-color: #ff6600; }
+        .icon-netease { background-color: #c13434; }
+        .icon-zhihu { background-color: #0084ff; }
+        .icon-36kr { background-color: #4689ff; }
+        .icon-ithome { background-color: #d81e06; }
+        .icon-huxiu { background-color: #1d1d1d; }
+        .icon-tiger { background-color: #00c250; }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .search-box input {
+                width: 200px;
+            }
+            
+            .site-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .category-tabs {
+                display: flex;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="/api/placeholder/40/40" alt="FRE123 Logo">
+                <h1>FRE123</h1>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="百度一下，你就知道">
+                <div class="search-icon">🔍</div>
+            </div>
+        </div>
+        
+        <!-- 新闻资讯 -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="category-title">新闻资讯</div>
+                <div class="category-tabs">
+                    <div class="category-tab active">新闻热点</div>
+                    <div class="category-tab">技术资讯</div>
+                    <div class="category-tab">技术周刊</div>
+                </div>
+                <a href="#" class="category-more">热榜资讯汇总>>></a>
+            </div>
+            <div class="site-grid">
+                <div class="site-item">
+                    <div class="site-icon icon-weibo">微</div>
+                    <div class="site-info">
+                        <div class="site-name">微博热搜</div>
+                        <div class="site-desc">与世界分享你的瞬间</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-toutiao">头</div>
+                    <div class="site-info">
+                        <div class="site-name">今日头条</div>
+                        <div class="site-desc">个性化资讯推荐</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-tiktok">抖</div>
+                    <div class="site-info">
+                        <div class="site-name">抖音热点</div>
+                        <div class="site-desc">发现身边的新鲜事</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-tencent">腾</div>
+                    <div class="site-info">
+                        <div class="site-name">腾讯新闻</div>
+                        <div class="site-desc">中国最大新闻平台</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-readhub">R</div>
+                    <div class="site-info">
+                        <div class="site-name">ReadHub</div>
+                        <div class="site-desc">全球科技新闻聚合</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-baidu">百</div>
+                    <div class="site-info">
+                        <div class="site-name">百度热搜</div>
+                        <div class="site-desc">百度热搜以数亿用户海量搜索</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-sina">新</div>
+                    <div class="site-info">
+                        <div class="site-name">新浪新闻</div>
+                        <div class="site-desc">中文新闻综合门户</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-netease">网</div>
+                    <div class="site-info">
+                        <div class="site-name">网易热榜</div>
+                        <div class="site-desc">新闻与资讯平台</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-zhihu">知</div>
+                    <div class="site-info">
+                        <div class="site-name">知乎热榜</div>
+                        <div class="site-desc">知识内容与热门话题</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-36kr">36</div>
+                    <div class="site-info">
+                        <div class="site-name">36氪</div>
+                        <div class="site-desc">创业与科技新闻，洞察商业未来</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-ithome">IT</div>
+                    <div class="site-info">
+                        <div class="site-name">IT之家</div>
+                        <div class="site-desc">科技新闻与评测专家</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-huxiu">虎</div>
+                    <div class="site-info">
+                        <div class="site-name">虎嗅新闻</div>
+                        <div class="site-desc">独立、深度、观点</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon icon-tiger">虎</div>
+                    <div class="site-info">
+                        <div class="site-name">虎嗅资讯</div>
+                        <div class="site-desc">商业观察与创新洞察</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 影视资源 -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="category-title">影视资源</div>
+                <div class="category-tabs">
+                    <div class="category-tab active">在线影视</div>
+                    <div class="category-tab">电影世界</div>
+                    <div class="category-tab">美日韩剧</div>
+                    <div class="category-tab">影视下载</div>
+                </div>
+            </div>
+            <div class="site-grid">
+                <div class="site-item">
+                    <div class="site-icon">BT</div>
+                    <div class="site-info">
+                        <div class="site-name">BTNULL 无名小站</div>
+                        <div class="site-desc">简单注册下，即可在线观看</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">Jo</div>
+                    <div class="site-info">
+                        <div class="site-name">JoJo 影视</div>
+                        <div class="site-desc">努力打造最好的海外热门资源</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">白</div>
+                    <div class="site-info">
+                        <div class="site-name">泰白影视</div>
+                        <div class="site-desc">提供最新最全的电视剧电影</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">注</div>
+                    <div class="site-info">
+                        <div class="site-name">注视影视</div>
+                        <div class="site-desc">在线影视搜索观看网站</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">哔</div>
+                    <div class="site-info">
+                        <div class="site-name">哔嘀影视</div>
+                        <div class="site-desc">最新电影电视剧免费观看下载</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">低</div>
+                    <div class="site-info">
+                        <div class="site-name">低端影视</div>
+                        <div class="site-desc">超清在线观看站</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">广</div>
+                    <div class="site-info">
+                        <div class="site-name">广长资源</div>
+                        <div class="site-desc">高清资源在线观看</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">大</div>
+                    <div class="site-info">
+                        <div class="site-name">大米星球</div>
+                        <div class="site-desc">免费高清电影大全</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">F</div>
+                    <div class="site-info">
+                        <div class="site-name">Free OK</div>
+                        <div class="site-desc">提供最新动漫番剧、电影</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">5</div>
+                    <div class="site-info">
+                        <div class="site-name">555电影</div>
+                        <div class="site-desc">每天更新热火娱乐日韩剧</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">好</div>
+                    <div class="site-info">
+                        <div class="site-name">好看123</div>
+                        <div class="site-desc">VIP电影最新电视剧综艺在线观看</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">搜</div>
+                    <div class="site-info">
+                        <div class="site-name">搜片</div>
+                        <div class="site-desc">搜你想看的影片，每天提供</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">影</div>
+                    <div class="site-info">
+                        <div class="site-name">影搜</div>
+                        <div class="site-desc">全网海量影片数据</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 动漫番剧 -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="category-title">动漫番剧</div>
+                <div class="category-tabs">
+                    <div class="category-tab active">番剧资源</div>
+                    <div class="category-tab">漫画阅读</div>
+                    <div class="category-tab">番剧下载</div>
+                </div>
+            </div>
+            <div class="site-grid">
+                <div class="site-item">
+                    <div class="site-icon">B</div>
+                    <div class="site-info">
+                        <div class="site-name">Bangumi 番组计划</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">B</div>
+                    <div class="site-info">
+                        <div class="site-name">BiliBili番剧</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">动</div>
+                    <div class="site-info">
+                        <div class="site-name">动漫线上</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">A</div>
+                    <div class="site-info">
+                        <div class="site-name">AGE 动漫</div>
+                    </div>
+                </div>
+                <div class="site-item">
+                    <div class="site-icon">樱</div>
+                    <div class="site-info">
+                        <div class="site-name">樱花动漫</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 FRE123 导航. 所有链接仅供参考.</p>
+        </div>
+    </div>
+</body>
+</html>
